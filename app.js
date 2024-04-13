@@ -1,6 +1,8 @@
 let $ = document;
+// window.answerQuestion = answerQuestion
 const total = $.querySelector(".total");
 const quizContainer = $.querySelector(".quiz-container");
+let isTrueAnswer = null;
 let questions = [
     {
         id: "1",
@@ -27,6 +29,7 @@ let questions = [
                 isTrue: false,
             },
         ],
+        score: 10,
     },
     {
         id: "2",
@@ -53,6 +56,7 @@ let questions = [
                 isTrue: true,
             },
         ],
+        score: 5,
     },
     {
         id: "3",
@@ -79,17 +83,31 @@ let questions = [
                 isTrue: false,
             },
         ],
+        score: 8,
     },
 ];
 console.log(questions);
-// quizContainer.innerHTML = ""
 questions.map((item, index) => quizContainer.insertAdjacentHTML("beforeend", `
-      <h2 class="question-text"> ${index + 1} . ${item.title} </h2>
+      <h2 class="question-text"> ${index + 1} . ${item.title}</h2>
 
       <ul class="answers-list">
-      ${item.answers.map((answer, index) => `<li class="answer-item">
+      ${item.answers
+    .map((answer, index) => `<li class=${`answer-item ${answer.isTrue ? "true" : "false"}`} onclick="answerQuestion('${answer.isTrue}')" > 
               <span class="answer-num">${index + 1} . </span>
               <p class="answer-text"> ${answer.text} </p>
-          </li>`)}
+          </li>`)
+    .join("")}
       </ul>`));
 export {};
+// function answerQuestion (answerValdiation: boolean): void {
+//   console.log(answerValdiation);
+//   // console.log(questionScore);
+//   if (answerValdiation) {
+//     isTrueAnswer = true;
+//     console.log(isTrueAnswer);
+//   } else {
+//     isTrueAnswer = false;
+//     console.log(isTrueAnswer);
+//   }
+//   isTrueAnswer = null
+// };
