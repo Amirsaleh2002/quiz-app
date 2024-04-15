@@ -1,7 +1,7 @@
 import { answersType } from "./Answers.type.js";
 
 
-export type questionType = {
+export interface questionType  {
   id: string;
   title: string;
   answers : answersType[],

@@ -1,12 +1,11 @@
 import { questionType } from "./Question.type.js";
-import { answersType } from "./Answers.type.js";
+declare const window: any;
 let $ = document;
-// window.answerQuestion = answerQuestion
 
 const total = $.querySelector(".total") as HTMLSpanElement;
 const quizContainer = $.querySelector(".quiz-container") as HTMLDivElement;
 
-let isTrueAnswer: any = null;
+// let isTrueAnswer = false;
 
 let questions: questionType[] = [
   {
@@ -91,8 +90,9 @@ let questions: questionType[] = [
     score: 8,
   },
 ];
-console.log(questions);
-questions.map((item, index) =>
+
+// console.log(questions);
+questions.forEach((item, index) =>
   quizContainer.insertAdjacentHTML(
     "beforeend",
     `
@@ -102,29 +102,28 @@ questions.map((item, index) =>
       ${item.answers
         .map(
           (answer, index) =>
-            `<li class=${`answer-item ${
-              answer.isTrue ? "true" : "false"
-            }`} onclick="answerQuestion('${answer.isTrue}')" > 
+            `<button onclick="answerQuestion(event , ${
+              answer.isTrue
+            })" class="answer-item" > 
               <span class="answer-num">${index + 1} . </span>
               <p class="answer-text"> ${answer.text} </p>
-          </li>`
+          </button>`
         )
         .join("")}
       </ul>`
   )
 );
 
-// function answerQuestion (answerValdiation: boolean): void {
-//   console.log(answerValdiation);
-//   // console.log(questionScore);
-//   if (answerValdiation) {
-//     isTrueAnswer = true;
-//     console.log(isTrueAnswer);
+function answerQuestion(event: any, validation: boolean): void {
+  if (String(validation) === "true") {
+    if (event.target.className === "answer-item") {
+      event.target.classList.add("true");
+    }
+  } else {
+    if (event.target.className === "answer-item") {
+      event.target.classList.add("false");
+    }
+  }
+}
 
-//   } else {
-//     isTrueAnswer = false;
-//     console.log(isTrueAnswer);
-
-//   }
-//   isTrueAnswer = null
-// };
+window.answerQuestion = answerQuestion;

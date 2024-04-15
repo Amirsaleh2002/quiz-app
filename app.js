@@ -1,8 +1,7 @@
 let $ = document;
-// window.answerQuestion = answerQuestion
 const total = $.querySelector(".total");
 const quizContainer = $.querySelector(".quiz-container");
-let isTrueAnswer = null;
+// let isTrueAnswer = false;
 let questions = [
     {
         id: "1",
@@ -86,28 +85,29 @@ let questions = [
         score: 8,
     },
 ];
-console.log(questions);
-questions.map((item, index) => quizContainer.insertAdjacentHTML("beforeend", `
+// console.log(questions);
+questions.forEach((item, index) => quizContainer.insertAdjacentHTML("beforeend", `
       <h2 class="question-text"> ${index + 1} . ${item.title}</h2>
 
       <ul class="answers-list">
       ${item.answers
-    .map((answer, index) => `<li class=${`answer-item ${answer.isTrue ? "true" : "false"}`} onclick="answerQuestion('${answer.isTrue}')" > 
+    .map((answer, index) => `<button onclick="answerQuestion(event , ${answer.isTrue})" class="answer-item" > 
               <span class="answer-num">${index + 1} . </span>
               <p class="answer-text"> ${answer.text} </p>
-          </li>`)
+          </button>`)
     .join("")}
       </ul>`));
+function answerQuestion(event, validation) {
+    if (String(validation) === "true") {
+        if (event.target.className === "answer-item") {
+            event.target.classList.add("true");
+        }
+    }
+    else {
+        if (event.target.className === "answer-item") {
+            event.target.classList.add("false");
+        }
+    }
+}
+window.answerQuestion = answerQuestion;
 export {};
-// function answerQuestion (answerValdiation: boolean): void {
-//   console.log(answerValdiation);
-//   // console.log(questionScore);
-//   if (answerValdiation) {
-//     isTrueAnswer = true;
-//     console.log(isTrueAnswer);
-//   } else {
-//     isTrueAnswer = false;
-//     console.log(isTrueAnswer);
-//   }
-//   isTrueAnswer = null
-// };
