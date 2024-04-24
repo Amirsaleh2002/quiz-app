@@ -86,14 +86,15 @@ let questions = [
     },
 ];
 function getQuestion() {
-    quizContainer.innerHTML = '';
+    var _a;
+    quizContainer.innerHTML = "";
     quizContainer.insertAdjacentHTML("beforeend", `
-  <h2 class="question-text"> ${questionIndex + 1} . ${questions[questionIndex].title}</h2>
+  <h2 class="question-text"> ${questionIndex + 1} . ${(_a = questions[questionIndex]) === null || _a === void 0 ? void 0 : _a.title}</h2>
   
     <ul class="answers-list">
   ${questions[questionIndex].answers
         .map((item, index) => `
-              <button onclick="answerQuestion(event , ${item.isTrue})" class="answer-item" > 
+              <button onclick="answerQuestion(event , ${item.isTrue} , ${questions[questionIndex].score})" class="answer-item" > 
                 <span class="answer-num">${index + 1} . </span>
                 <p class="answer-text"> ${item.text} </p>
             </button>`)
@@ -101,42 +102,34 @@ function getQuestion() {
             
             </ul>`);
 }
-// questions.forEach((item, index) =>
-//   quizContainer.insertAdjacentHTML(
-//     "beforeend",
-//     `
-//       <h2 class="question-text"> ${index + 1} . ${item.title}</h2>
-//       <ul class="answers-list">
-//       ${item.answers
-//         .map(
-//           (answer, index) =>
-//             `<button onclick="answerQuestion(event , ${
-//               answer.isTrue
-//             })" class="answer-item" >
-//               <span class="answer-num">${index + 1} . </span>
-//               <p class="answer-text"> ${answer.text} </p>
-//           </button>`
-//         )
-//         .join("")}
-//       </ul>`
-//   )
-// );
-function answerQuestion(event, validation) {
-    if (String(validation) === "true") {
-        if (event.target.className === "answer-item") {
-            event.target.classList.add("true");
+let totalScore = 0;
+total.innerHTML = `Your score is : ${totalScore.toString()}`;
+function answerQuestion(event, validation, questionScore) {
+    questionIndex = questionIndex + 1;
+    let getQuestionTime = setTimeout(() => {
+        getQuestion();
+    }, 2000);
+    if (questionIndex <= questions.length - 1) {
+        if (String(validation) === "true") {
+            if (event.target.className === "answer-item") {
+                event.target.classList.add("true");
+            }
+            totalScore = totalScore + questionScore;
+            total.innerHTML = `Your score is : ${totalScore.toString()}`;
+        }
+        else {
+            if (event.target.className === "answer-item") {
+                event.target.classList.add("false");
+            }
         }
     }
     else {
-        if (event.target.className === "answer-item") {
-            event.target.classList.add("false");
-        }
+        quizContainer.innerHTML = `<h2 class="finish-quiz">FINSIH</h2>`;
+        clearTimeout(getQuestionTime);
     }
-    setTimeout(() => {
-        questionIndex = questionIndex + 1;
-        getQuestion();
-    }, 2000);
+    console.log(questions.length);
+    console.log(questionIndex);
 }
 window.answerQuestion = answerQuestion;
-window.addEventListener('load', getQuestion);
+window.addEventListener("load", getQuestion);
 export {};

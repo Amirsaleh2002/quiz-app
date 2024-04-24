@@ -20,7 +20,7 @@ body {
   color: white;
 }
 .total {
-  position: fixed;
+  position: absolute;
   top: 10px;
   left: 10px;
   color: white;
@@ -72,7 +72,9 @@ body {
 .false {
   background-color: red;
 }
-
+.finish-quiz{
+  color: red;
+}
 .answer-item:focus {
   animation: liAnimation 2s ;
 }
