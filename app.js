@@ -1,7 +1,7 @@
 let $ = document;
 const total = $.querySelector(".total");
 const quizContainer = $.querySelector(".quiz-container");
-// let isTrueAnswer = false;
+let questionIndex = 0;
 let questions = [
     {
         id: "1",
@@ -85,18 +85,42 @@ let questions = [
         score: 8,
     },
 ];
-// console.log(questions);
-questions.forEach((item, index) => quizContainer.insertAdjacentHTML("beforeend", `
-      <h2 class="question-text"> ${index + 1} . ${item.title}</h2>
-
-      <ul class="answers-list">
-      ${item.answers
-    .map((answer, index) => `<button onclick="answerQuestion(event , ${answer.isTrue})" class="answer-item" > 
-              <span class="answer-num">${index + 1} . </span>
-              <p class="answer-text"> ${answer.text} </p>
-          </button>`)
-    .join("")}
-      </ul>`));
+function getQuestion() {
+    quizContainer.innerHTML = '';
+    quizContainer.insertAdjacentHTML("beforeend", `
+  <h2 class="question-text"> ${questionIndex + 1} . ${questions[questionIndex].title}</h2>
+  
+    <ul class="answers-list">
+  ${questions[questionIndex].answers
+        .map((item, index) => `
+              <button onclick="answerQuestion(event , ${item.isTrue})" class="answer-item" > 
+                <span class="answer-num">${index + 1} . </span>
+                <p class="answer-text"> ${item.text} </p>
+            </button>`)
+        .join("")}
+            
+            </ul>`);
+}
+// questions.forEach((item, index) =>
+//   quizContainer.insertAdjacentHTML(
+//     "beforeend",
+//     `
+//       <h2 class="question-text"> ${index + 1} . ${item.title}</h2>
+//       <ul class="answers-list">
+//       ${item.answers
+//         .map(
+//           (answer, index) =>
+//             `<button onclick="answerQuestion(event , ${
+//               answer.isTrue
+//             })" class="answer-item" >
+//               <span class="answer-num">${index + 1} . </span>
+//               <p class="answer-text"> ${answer.text} </p>
+//           </button>`
+//         )
+//         .join("")}
+//       </ul>`
+//   )
+// );
 function answerQuestion(event, validation) {
     if (String(validation) === "true") {
         if (event.target.className === "answer-item") {
@@ -108,6 +132,13 @@ function answerQuestion(event, validation) {
             event.target.classList.add("false");
         }
     }
+    setTimeout(() => {
+        questionIndex = questionIndex + 1;
+        getQuestion();
+    }, 2000);
+    console.log(questionIndex);
 }
 window.answerQuestion = answerQuestion;
+// window.getQuestion = getQuestion;
+window.addEventListener('load', getQuestion);
 export {};

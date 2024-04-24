@@ -5,7 +5,7 @@ let $ = document;
 const total = $.querySelector(".total") as HTMLSpanElement;
 const quizContainer = $.querySelector(".quiz-container") as HTMLDivElement;
 
-// let isTrueAnswer = false;
+let questionIndex: number = 0;
 
 let questions: questionType[] = [
   {
@@ -91,28 +91,54 @@ let questions: questionType[] = [
   },
 ];
 
-// console.log(questions);
-questions.forEach((item, index) =>
+function getQuestion () {
+  quizContainer.innerHTML = ''
   quizContainer.insertAdjacentHTML(
     "beforeend",
     `
-      <h2 class="question-text"> ${index + 1} . ${item.title}</h2>
+  <h2 class="question-text"> ${questionIndex + 1} . ${
+      questions[questionIndex].title
+    }</h2>
+  
+    <ul class="answers-list">
+  ${questions[questionIndex].answers
+    .map(
+      (item, index) =>
+        `
+              <button onclick="answerQuestion(event , ${
+                item.isTrue
+              })" class="answer-item" > 
+                <span class="answer-num">${index + 1} . </span>
+                <p class="answer-text"> ${item.text} </p>
+            </button>`
+    )
+    .join("")}
+            
+            </ul>`
+  );
+}
 
-      <ul class="answers-list">
-      ${item.answers
-        .map(
-          (answer, index) =>
-            `<button onclick="answerQuestion(event , ${
-              answer.isTrue
-            })" class="answer-item" > 
-              <span class="answer-num">${index + 1} . </span>
-              <p class="answer-text"> ${answer.text} </p>
-          </button>`
-        )
-        .join("")}
-      </ul>`
-  )
-);
+// questions.forEach((item, index) =>
+//   quizContainer.insertAdjacentHTML(
+//     "beforeend",
+//     `
+//       <h2 class="question-text"> ${index + 1} . ${item.title}</h2>
+
+//       <ul class="answers-list">
+//       ${item.answers
+//         .map(
+//           (answer, index) =>
+//             `<button onclick="answerQuestion(event , ${
+//               answer.isTrue
+//             })" class="answer-item" >
+//               <span class="answer-num">${index + 1} . </span>
+//               <p class="answer-text"> ${answer.text} </p>
+//           </button>`
+//         )
+//         .join("")}
+//       </ul>`
+//   )
+// );
 
 function answerQuestion(event: any, validation: boolean): void {
   if (String(validation) === "true") {
@@ -124,6 +150,16 @@ function answerQuestion(event: any, validation: boolean): void {
       event.target.classList.add("false");
     }
   }
+
+  setTimeout(() => {
+    questionIndex = questionIndex + 1;
+    getQuestion()
+  },2000)
+  console.log(questionIndex);
+  
 }
 
 window.answerQuestion = answerQuestion;
+// window.getQuestion = getQuestion;
+
+window.addEventListener('load' , getQuestion)
