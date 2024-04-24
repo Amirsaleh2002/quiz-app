@@ -136,9 +136,7 @@ function answerQuestion(event, validation) {
         questionIndex = questionIndex + 1;
         getQuestion();
     }, 2000);
-    console.log(questionIndex);
 }
 window.answerQuestion = answerQuestion;
-// window.getQuestion = getQuestion;
 window.addEventListener('load', getQuestion);
 export {};
