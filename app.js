@@ -86,10 +86,9 @@ let questions = [
     },
 ];
 function getQuestion() {
-    var _a;
     quizContainer.innerHTML = "";
     quizContainer.insertAdjacentHTML("beforeend", `
-  <h2 class="question-text"> ${questionIndex + 1} . ${(_a = questions[questionIndex]) === null || _a === void 0 ? void 0 : _a.title}</h2>
+  <h2 class="question-text"> ${questionIndex + 1} . ${questions[questionIndex].title}</h2>
   
     <ul class="answers-list">
   ${questions[questionIndex].answers
@@ -103,29 +102,27 @@ function getQuestion() {
             </ul>`);
 }
 let totalScore = 0;
-total.innerHTML = `Your score is : ${totalScore.toString()}`;
 function answerQuestion(event, validation, questionScore) {
-    questionIndex = questionIndex + 1;
-    let getQuestionTime = setTimeout(() => {
-        getQuestion();
-    }, 2000);
-    if (questionIndex <= questions.length - 1) {
-        if (String(validation) === "true") {
-            if (event.target.className === "answer-item") {
-                event.target.classList.add("true");
-            }
-            totalScore = totalScore + questionScore;
-            total.innerHTML = `Your score is : ${totalScore.toString()}`;
+    if (String(validation) === "true") {
+        if (event.target.className === "answer-item") {
+            event.target.classList.add("true");
         }
-        else {
-            if (event.target.className === "answer-item") {
-                event.target.classList.add("false");
-            }
-        }
+        totalScore = totalScore + questionScore;
     }
     else {
-        quizContainer.innerHTML = `<h2 class="finish-quiz">FINSIH</h2>`;
-        clearTimeout(getQuestionTime);
+        if (event.target.className === "answer-item") {
+            event.target.classList.add("false");
+        }
+    }
+    $.querySelectorAll(".answer-item").forEach((item) => item.setAttribute("disabled", "true"));
+    if (questionIndex === questions.length - 1) {
+        quizContainer.innerHTML = `<h2 class="finish-quiz">Your score is :  ${totalScore.toLocaleString()}</h2>`;
+    }
+    else {
+        setTimeout(() => {
+            questionIndex += 1;
+            getQuestion();
+        }, 2000);
     }
     console.log(questions.length);
     console.log(questionIndex);

@@ -97,7 +97,7 @@ function getQuestion() {
     "beforeend",
     `
   <h2 class="question-text"> ${questionIndex + 1} . ${
-      questions[questionIndex]?.title
+      questions[questionIndex].title
     }</h2>
   
     <ul class="answers-list">
@@ -119,41 +119,39 @@ function getQuestion() {
 }
 
 let totalScore: number = 0;
-total.innerHTML = `Your score is : ${totalScore.toString()}`;
 
 function answerQuestion(
   event: any,
   validation: boolean,
   questionScore: number
 ): void {
-  questionIndex = questionIndex + 1;
-
-  let getQuestionTime =  setTimeout(() => {
-    getQuestion();
-  }, 2000);
-  if (questionIndex <= questions.length - 1) {
-    if (String(validation) === "true") {
-      if (event.target.className === "answer-item") {
-        event.target.classList.add("true");
-      }
-      totalScore = totalScore + questionScore;
-      total.innerHTML = `Your score is : ${totalScore.toString()}`;
-    } else {
-      if (event.target.className === "answer-item") {
-        event.target.classList.add("false");
-      }
+  if (String(validation) === "true") {
+    if (event.target.className === "answer-item") {
+      event.target.classList.add("true");
     }
+    totalScore = totalScore + questionScore;
   } else {
-    quizContainer.innerHTML = `<h2 class="finish-quiz">FINSIH</h2>`
-    clearTimeout(getQuestionTime)
+    if (event.target.className === "answer-item") {
+      event.target.classList.add("false");
+    }
+  }
+
+  $.querySelectorAll(".answer-item").forEach((item) =>
+    item.setAttribute("disabled", "true")
+  );
+  
+  if (questionIndex === questions.length - 1) {
+    quizContainer.innerHTML = `<h2 class="finish-quiz">Your score is :  ${totalScore.toLocaleString()}</h2>`;
+  } else {
+    setTimeout(() => {
+      questionIndex += 1;
+      getQuestion();
+    }, 2000);
   }
 
   console.log(questions.length);
   console.log(questionIndex);
-
-
 }
 
 window.answerQuestion = answerQuestion;
-
 window.addEventListener("load", getQuestion);

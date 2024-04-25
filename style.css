@@ -19,20 +19,6 @@ body {
   font-size: 2rem;
   color: white;
 }
-.total {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  color: white;
-  background-color: green;
-  padding: 10px;
-  border-radius: 10px;
-  font-weight: 700;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .quiz-container {
   display: flex;
   flex-direction: column;
@@ -73,7 +59,8 @@ body {
   background-color: red;
 }
 .finish-quiz{
-  color: red;
+  color: green;
+  font-size: 2rem;
 }
 .answer-item:focus {
   animation: liAnimation 2s ;
