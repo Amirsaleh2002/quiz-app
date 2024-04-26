@@ -1,4 +1,6 @@
 import { questionType } from "./Question.type.js";
+import i18next from './i18n.js';
+
 declare const window: any;
 let $ = document;
 
@@ -7,6 +9,9 @@ const quizContainer = $.querySelector(".quiz-container") as HTMLDivElement;
 
 let questionIndex: number = 0;
 
+console.log(i18next.t('ns1:title'));
+
+
 let questions: questionType[] = [
   {
     id: "1",
@@ -14,22 +19,22 @@ let questions: questionType[] = [
     answers: [
       {
         id: "11",
-        text: "cior",
+        text: "saleh",
         isTrue: false,
       },
       {
         id: "12",
-        text: "vmmervmrl",
+        text: "ali",
         isTrue: true,
       },
       {
         id: "13",
-        text: "wdecvr",
+        text: "reza",
         isTrue: false,
       },
       {
         id: "14",
-        text: "cecrver",
+        text: "gholi",
         isTrue: false,
       },
     ],
@@ -97,7 +102,7 @@ function getQuestion() {
     "beforeend",
     `
   <h2 class="question-text"> ${questionIndex + 1} . ${
-      questions[questionIndex].title
+    questions[questionIndex].title
     }</h2>
   
     <ul class="answers-list">
